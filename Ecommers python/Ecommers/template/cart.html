@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block title %}
+
+{% endblock %}
+
+{%block content %}
+{% if not cart_item %}
+<div>
+  <div>
+    <h1 class="text-center">Your Cart Is Empty</h1>
+    <br>
+    <p class="text-center">Continue Shopping<a href="{% url 'app1:allProduct' %}" >  Click here </a></p>
+  </div>
+</div>
+{% else %}
+<div>
+  <div class="text-center">
+    <h1 class="text-center my_title">
+      Your Shopping Cart
+    </h1><br><hr>
+  </div>
+  <div class="row mx-auto">
+    <div class="col-12 col-sm-12 col-md-12  col-lg-6">
+      <table class="my_custom_table" >
+        <thead class="my_custom_thead text-center">
+          <tr>
+            <th colspan="5">
+              Your items
+            </th>
+          </tr>
+        </thead>
+{% for i in cart_item %}
+        <tbody>
+          <tr>
+
+          <td>
+            <br><a href="i.product.get_absolute_url"><img src="{{i.product.image.url}}" alt="" class="float-left rounded " width="100px" height="100px"></a>
+          </td>
+
+          <td class="text-left" colspan="3" rowspan="3">
+            {{i.product.name}}<br>
+            SKU:{{i.product.id}}<br>
+            Price:${{i.product.price}}<br>
+            Qty:{{i.quantity}} x ${{i.product.price}}<br>
+          </td>
+          <td>
+            ${{i.sub_total}}
+          </td>
+          {% if i.quantity < i.product.stock %}
+          <td>
+            <a href="{% url 'cart:add_cart' i.product.id %}" class="custom_a"><i class="fa-solid fa-plus"></i></a>
+            &nbsp;<a href="{% url 'cart:remove_cart' i.product.id %}" class="custom_a"><i class="fa-solid fa-minus"></i></a>
+            &nbsp;<a href="{% url 'cart:delete_cart' i.product.id %}" class="custom_a"><i class="fa-solid fa-trash custom_icon"></i></a>
+          </td>
+          {% else %}
+          <td>
+            &nbsp;<a href="{% url 'cart:remove_cart' i.product.id %}" class="custom_a"><i class="fa-solid fa-minus"></i></a>
+            &nbsp;<a href="{% url 'cart:delete_cart' i.product.id %}" class="custom_a"><i class="fa-solid fa-trash custom_icon"></i></a>
+          </td>
+          {% endif %}
+          </tr>
+        </tbody>
+{% endfor %}
+
+      </table>
+    </div>
+
+
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-6 ">
+  <table class="my_custom_table">
+    <thead class="my_custom_thead text-center">
+      <tr>
+        <th>
+          Checkout
+
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        please review your item before proceeding payment
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+<div >
+  <br><a href="{% url 'app1:allProduct' %} " class="btn btn-secondary btn block my_custom_button">Continue shopping</a>
+  <a href="#" class="btn btn-secondary btn block my_custom_button">Proceed</a>
+</div>
+
+</div>
+</div>
+ </div>
+{% endif %}
+{% endblock %}
